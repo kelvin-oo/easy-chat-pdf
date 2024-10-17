@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SYSTEM
+  USER
+}
+
+model Chat {
+  id        Int       @id @default(autoincrement())
+  pdfName   String
+  pdfUrl    String
+  createdAt DateTime  @default(now())
+  userId    String    @db.VarChar(256)
+  fileKey   String
+
+  Messages  Message[] // Defines the one-to-many relationship with the Message model
+
+  @@map("chats") // Maps the model to the "chats" table
+}
+
+
+model Message {
+  id        Int       @id @default(autoincrement())
+  chatId    Int
+  content   String
+  createdAt DateTime  @default(now())
+  role      Role
+
+  Chat      Chat      @relation(fields: [chatId], references: [id])
+
+  @@map("messages") // Maps the model to the "messages" table
+}
