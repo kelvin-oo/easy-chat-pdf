@@ -16,6 +16,7 @@ This application allows users to upload PDF documents and engage in a chat-like 
 
 ## Technologies Used
 
+
 - Frontend & Backend: Next.js
 - PDF Processing: pdf-parse
 - Vector Database: Pinecone
